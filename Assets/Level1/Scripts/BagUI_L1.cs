@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class BagUI_L1 : BagUI
 {
-    #region 当前关卡包含的Item
-    #endregion
+    void Awake()
+    {
+        //创建单例
+        if (instance != null) Destroy(gameObject);
+        instance = this;
+    }
+
     void Start()
     {
         Init();
     }
+
+
 }
