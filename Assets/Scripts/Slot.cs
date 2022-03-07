@@ -22,6 +22,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         IsChosen = !IsChosen;
-        BagUI.ClickSlot(Index);
+        BagUI.Instance.ClickSlot(Index);
     }
 }

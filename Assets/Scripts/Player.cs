@@ -1,5 +1,6 @@
 using BagDataManager;
 using DG.Tweening;
+using Fungus;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class Player : MonoBehaviour
     [SerializeField] LevelManager levelManager;
     [SerializeField] float speed;
     public bool Froze { get; set; }
-    public bool IsInPickItem { get; private set; }
     public SpriteRenderer holdingSr;
     #endregion
 
@@ -20,41 +20,71 @@ public class Player : MonoBehaviour
     private Bag bag = new Bag();
     #endregion //数据
 
-
     #region 预设函数==================================================
-    string PICKEDITEM = "PickedItem";
-    PickedItem pickedItem = null;
-    void OnTriggerEnter2D(Collider2D collision)
+    Collider2D coll = null;
+    readonly string PLAYER = "Player";
+    readonly string PICKEDITEM = "PickedItem";
+    readonly string DOOR = "Door";
+    readonly string INTERACTIVEITEM = "InteractiveItem";
+    readonly string TELEPORTER = "Teleporter";
+
+    protected virtual void Update()
     {
-        //进入可捡起物品范围，参数赋予
-        if (collision.CompareTag(PICKEDITEM)) {
-            IsInPickItem = true;
-            pickedItem = collision.transform.GetComponent<PickedItem>();
+        //传送
+        if (coll && coll.CompareTag(TELEPORTER)) {
+            coll.GetComponent<Teleporter>().Teleport(transform);
+            return;
+        }
+
+        //捡起物品
+        if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(PICKEDITEM)) {
+            PickItem(coll.GetComponent<PickedItem>());
+            return;
+        }
+        //进门
+        if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(DOOR)) {
+            coll.GetComponent<Door>().GetIn(transform);
+            return;
+        }
+
+        //使用物品
+        if (Input.GetKeyDown(KeyCode.R)) {
+            holdingSr.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 1), 0.2f);
+            if (coll && coll.CompareTag(INTERACTIVEITEM)) {
+                UseItem();
+            }
+        }
+
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag(PLAYER)) {
+            coll = collision;
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        //离开可捡起物品范围
-        if (collision.CompareTag(PICKEDITEM)) {
-            IsInPickItem = false;
-            pickedItem = null;
+        if (!collision.CompareTag(PLAYER)) {
+            coll = null;
         }
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         Move();
     }
+
     #endregion
 
     #region 自定义函数==================================================
 
-    //移动
+    #region 移动
     float xMove = 0;
     private void Move()
     {
         if (Froze) xMove = 0;
-        else xMove = Input.GetAxis("Horizontal") * speed * Time.fixedDeltaTime;
+        else xMove = Input.GetAxisRaw("Horizontal") * speed * Time.fixedDeltaTime;
         transform.position += new Vector3(xMove, 0, 0);
 
         //转向
@@ -65,8 +95,9 @@ public class Player : MonoBehaviour
                 transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
+    #endregion
 
-    //hold/use/pick物品，由BagUI调用
+    #region hold、getbag，由BagUI调用
     public void HoldItem(int index)
     {
         bag.HoldItem(index);
@@ -76,27 +107,36 @@ public class Player : MonoBehaviour
             holdingSr.sprite = null;
         }
     }
-
-    public void UseItem()
-    {
-        holdingSr.transform.DOPunchScale(new Vector3(0.7f, 0.2f, 1), 0.2f);
-        bag.UseItem();
-    }
-
     public Bag GetBag()
     {
-        return bag;
+        return Instance.bag;
     }
 
-    public void PickItem()
+    #endregion
+
+    #region use/pick物品
+    private void UseItem()
     {
-        if(pickedItem == null) {
+        bag.UseItem();//背包数据更新
+        BagUI.Instance.Refresh_UseItem();//背包UI更新
+        if (bag.HoldingItemIndex == -1) {//持有图片更新
+            holdingSr.sprite = null;
+        }
+
+    }
+    private void PickItem(PickedItem pi)
+    {
+        if (pi == null) {
             print("拾取物品为空");
             return;
         }
-        levelManager.item_dict.TryGetValue(pickedItem.itemName,out Item it);
-        pickedItem.PickIt();
-        bag.AddItem(it);
+        levelManager.item_dict.TryGetValue(pi.itemName, out Item it);
+        pi.PickIt();
+        bag.AddItem(it);//背包数据更新
+        BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
+
     }
+    #endregion
+
     #endregion
 }

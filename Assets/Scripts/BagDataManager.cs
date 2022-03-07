@@ -19,22 +19,21 @@ namespace BagDataManager
 
         public void HoldItem(int index)
         {
-            if(index < 0) {
+            if (index < 0) {
                 HoldingItemIndex = index;
                 return;
             }
             if (index >= item_list.Count) return;
 
             HoldingItemIndex = index;
-            if(item_list[index].Hold!=null) item_list[index].Hold();
+            if (item_list[index].Hold != null) item_list[index].Hold();
         }
 
         public void UseItem()
         {
             if (HoldingItemIndex >= item_list.Count || HoldingItemIndex < 0) return;
 
-
-            if (item_list[HoldingItemIndex].Use != null&&item_list[HoldingItemIndex].Use()) {
+            if (item_list[HoldingItemIndex].Use != null && item_list[HoldingItemIndex].Use()) {
                 if (item_list[HoldingItemIndex].isOnce) {
                     item_list.RemoveAt(HoldingItemIndex);
                     HoldingItemIndex = -1;
@@ -48,6 +47,7 @@ namespace BagDataManager
         {
             return item_list;
         }
+
     }
 
     //***Item经由Bag管理，不单独管理***
@@ -61,7 +61,7 @@ namespace BagDataManager
         public Func<bool> Use;
         public Func<bool> Hold;
 
-        public Item(string nname,bool iisOnce,Sprite iico,Func<bool> uuse,Func<bool> hhold)
+        public Item(string nname, bool iisOnce, Sprite iico, Func<bool> uuse, Func<bool> hhold)
         {
             name = nname;
             isOnce = iisOnce;
