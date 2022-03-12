@@ -13,7 +13,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public Image Ico { get; set; }
 
-    void Start()
+    void Awake()
     {
         Index = transform.GetSiblingIndex();
         Ico = transform.Find("Ico").GetComponent<Image>();

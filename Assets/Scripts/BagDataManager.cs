@@ -15,6 +15,11 @@ namespace BagDataManager
         public void AddItem(Item item)
         {
             item_list.Add(item);
+            item.Get?.Invoke();
+        }
+        public void RemoveItem(Item item)
+        {
+            item_list.Remove(item);
         }
 
         public void HoldItem(int index)
@@ -29,11 +34,11 @@ namespace BagDataManager
             if (item_list[index].Hold != null) item_list[index].Hold();
         }
 
-        public void UseItem()
+        public void UseItem(string toname)
         {
             if (HoldingItemIndex >= item_list.Count || HoldingItemIndex < 0) return;
 
-            if (item_list[HoldingItemIndex].Use != null && item_list[HoldingItemIndex].Use()) {
+            if (item_list[HoldingItemIndex].Use != null && item_list[HoldingItemIndex].Use(toname)) {
                 if (item_list[HoldingItemIndex].isOnce) {
                     item_list.RemoveAt(HoldingItemIndex);
                     HoldingItemIndex = -1;
@@ -58,14 +63,17 @@ namespace BagDataManager
         public bool isOnce;
         public Sprite ico;
         //public abstract Sprite Ico { get; }
-        public Func<bool> Use;
+        public Action Get;
+        public Func<string,bool> Use;
         public Func<bool> Hold;
 
-        public Item(string nname, bool iisOnce, Sprite iico, Func<bool> uuse, Func<bool> hhold)
+        public Item(string nname, bool iisOnce, Sprite iico, Action gget, Func<string,bool> uuse, Func<bool> hhold)
         {
             name = nname;
             isOnce = iisOnce;
             ico = iico;
+
+            Get = gget;
             Use = uuse;
             Hold = hhold;
         }

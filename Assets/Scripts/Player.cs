@@ -5,42 +5,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
     public static Player Instance { get; protected set; }
 
     #region 预设
-    [SerializeField] LevelManager levelManager;
+    [SerializeField] protected LevelManager levelManager;
     [SerializeField] float speed;
-    public bool Froze { get; set; }
-    public SpriteRenderer holdingSr;
+    private bool froze;
+    protected SpriteRenderer holdingSr;
+    public Flowchart flowChart;
     #endregion
 
-    #region 数据
-    private Bag bag = new Bag();
-    #endregion //数据
-
     #region 预设函数==================================================
-    Collider2D coll = null;
-    readonly string PLAYER = "Player";
-    readonly string PICKEDITEM = "PickedItem";
-    readonly string DOOR = "Door";
-    readonly string INTERACTIVEITEM = "InteractiveItem";
-    readonly string TELEPORTER = "Teleporter";
+    protected Collider2D coll = null;
+    protected readonly string PLAYER = "Player";
+    protected readonly string PICKEDITEM = "PickedItem";
+    protected readonly string DOOR = "Door";
+    protected readonly string INTERACTIVEITEM = "InteractiveItem";
+    protected readonly string TELEPORTER = "Teleporter";
+    protected readonly string CHARACTER = "Character";
+
+    protected virtual void Start()
+    {
+        holdingSr = transform.Find("Hold").GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+    }
 
     protected virtual void Update()
     {
+        //动画
+        SwitchAnim();
+
+        //玩家Froze！！
+        if (froze) return;
+
         //传送
         if (coll && coll.CompareTag(TELEPORTER)) {
             coll.GetComponent<Teleporter>().Teleport(transform);
             return;
         }
-
         //捡起物品
         if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(PICKEDITEM)) {
-            PickItem(coll.GetComponent<PickedItem>());
+            PickItem(coll.gameObject);
             return;
         }
+        //特殊交互物品，在子类中写
+        //if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(INTERACTIVEITEM)){}
         //进门
         if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(DOOR)) {
             coll.GetComponent<Door>().GetIn(transform);
@@ -51,8 +62,15 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) {
             holdingSr.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 1), 0.2f);
             if (coll && coll.CompareTag(INTERACTIVEITEM)) {
-                UseItem();
+                UseItem(coll.name);
+            } else {
+                UseItem("自己");
             }
+        }
+
+        //对话
+        if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(CHARACTER)) {
+            Talk();
         }
 
     }
@@ -79,11 +97,20 @@ public class Player : MonoBehaviour
 
     #region 自定义函数==================================================
 
+    public void Froze()
+    {
+        froze = true;
+    }
+    public void DeFroze()
+    {
+        froze = false;
+    }
+
     #region 移动
     float xMove = 0;
     private void Move()
     {
-        if (Froze) xMove = 0;
+        if (froze) xMove = 0;
         else xMove = Input.GetAxisRaw("Horizontal") * speed * Time.fixedDeltaTime;
         transform.position += new Vector3(xMove, 0, 0);
 
@@ -97,45 +124,56 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region 动画
+    private Animator animator;
+    readonly string XMOVE = "xMove";
+    private void SwitchAnim()
+    {
+        if (Mathf.Abs(xMove) > 0.01f) {
+            animator.SetBool(XMOVE, true);
+        } else {
+            animator.SetBool(XMOVE, false);
+        }
+    }
+    #endregion
+
     #region hold、getbag，由BagUI调用
     public void HoldItem(int index)
     {
-        bag.HoldItem(index);
-        if (index >= 0 && index < bag.GetItemList().Count) {
-            holdingSr.sprite = bag.GetItemList()[index].ico;
+        levelManager.bag.HoldItem(index);
+        if (index >= 0 && index < levelManager.bag.GetItemList().Count) {
+            holdingSr.sprite = levelManager.bag.GetItemList()[index].ico;
         } else {
             holdingSr.sprite = null;
         }
     }
-    public Bag GetBag()
-    {
-        return Instance.bag;
-    }
+
 
     #endregion
 
     #region use/pick物品
-    private void UseItem()
+    private void UseItem(string toname)
     {
-        bag.UseItem();//背包数据更新
+        levelManager.bag.UseItem(toname);//背包数据更新
         BagUI.Instance.Refresh_UseItem();//背包UI更新
-        if (bag.HoldingItemIndex == -1) {//持有图片更新
+        if (levelManager.bag.HoldingItemIndex == -1) {//持有图片更新
             holdingSr.sprite = null;
         }
 
     }
-    private void PickItem(PickedItem pi)
+    private void PickItem(GameObject obj)
     {
-        if (pi == null) {
-            print("拾取物品为空");
-            return;
-        }
-        levelManager.item_dict.TryGetValue(pi.itemName, out Item it);
-        pi.PickIt();
-        bag.AddItem(it);//背包数据更新
-        BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
+        levelManager.item_dict.TryGetValue(obj.name, out Item it);
+        obj.SetActive(false);
+        levelManager.bag.AddItem(it);//背包数据更新
+        BagUI.Instance.Refresh_PickItem(levelManager.bag.GetItemList().Count - 1);//背包UI更新
 
     }
+    #endregion
+
+    #region 对话
+    protected abstract void Talk();
+
     #endregion
 
     #endregion

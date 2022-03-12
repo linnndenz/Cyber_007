@@ -2,7 +2,6 @@ using BagDataManager;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 //物品hold都由此检测，再传递数据给Player
@@ -20,10 +19,17 @@ public class BagUI : MonoBehaviour
 
     [Header("数据")]
     private Bag bag;
-    protected virtual void Start()
+
+    private void Awake()
+    {
+        //创建单例
+        if (Instance != null) Destroy(gameObject);
+        Instance = this;
+    }
+    void Start()
     {
         //数据初始化
-        bag = Player.Instance.GetBag();
+        bag = LevelManager.GetBag();
         slots = slotParent.GetComponentsInChildren<Slot>();
         ReFresh();
     }

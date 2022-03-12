@@ -5,10 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - PickedItem
-  - PickItem
   - Door
   - InteractiveItem
   - Teleporter
+  - Character
   layers:
   - Default
   - TransparentFX
