@@ -9,15 +9,4 @@ public class Player_L1_Pre : Player
         if (Instance != null) Destroy(gameObject);
         Instance = this;
     }
-
-    protected override void Update()
-    {
-        base.Update();
-        if (Input.GetKeyDown(KeyCode.R)) {
-            
-        }
-
-    }
-
-    protected override void Talk(){}
 }

@@ -13,6 +13,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField] protected LevelManager levelManager;
     [SerializeField] float speed;
     private bool froze;
+    private bool frozeMove;
     protected SpriteRenderer holdingSr;
     public Flowchart flowChart;
     #endregion
@@ -29,14 +30,13 @@ public abstract class Player : MonoBehaviour
     protected virtual void Start()
     {
         holdingSr = transform.Find("Hold").GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Update()
-    {
+    { 
         //动画
         SwitchAnim();
-
         //玩家Froze！！
         if (froze) return;
 
@@ -101,16 +101,27 @@ public abstract class Player : MonoBehaviour
     {
         froze = true;
     }
+
+    
     public void DeFroze()
     {
         froze = false;
+    }
+
+    public void FrozeMove()
+    {
+        frozeMove = true;
+    }
+    public void DeFrozeMove()
+    {
+        frozeMove = false;
     }
 
     #region 移动
     float xMove = 0;
     private void Move()
     {
-        if (froze) xMove = 0;
+        if (froze||frozeMove) xMove = 0;
         else xMove = Input.GetAxisRaw("Horizontal") * speed * Time.fixedDeltaTime;
         transform.position += new Vector3(xMove, 0, 0);
 
@@ -125,7 +136,7 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 动画
-    private Animator animator;
+    public Animator animator;
     readonly string XMOVE = "xMove";
     private void SwitchAnim()
     {
@@ -172,7 +183,9 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 对话
-    protected abstract void Talk();
+    protected virtual void Talk() {
+        Froze();
+    }
 
     #endregion
 

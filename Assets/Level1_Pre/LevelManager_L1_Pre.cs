@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class LevelManager_L1_Pre : LevelManager
 {
-    public Player_L1_Pre player;
     public Image black;
 
     public override void InitItems()

@@ -27,5 +27,9 @@ public class LockedBox : MonoBehaviour
         }
     }
 
-    void CloseIt()=>gameObject.SetActive(false);
+    void CloseIt()
+    {
+        levelManager.player.DeFroze();
+        gameObject.SetActive(false);
+    }
 }

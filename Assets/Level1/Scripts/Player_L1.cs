@@ -36,23 +36,28 @@ public sealed class Player_L1 : Player
                 case "密码盒":
                     l1Manager.OpenLockedBoxUI();
                     break;
+                case "公鸡的雕像":
+                    l1Manager.OpenEggUI();
+                    break;
 
             }
         }
 
     }
 
-    bool bFirstToCool = true;
+    bool bFirstToCook = true;
+    bool bFirstToSoldier = true;
     protected override void Talk()
     {
+        base.Talk();
         switch (coll.name) {
             case "小孩A":
                 flowChart.ExecuteBlock("小孩A");
                 break;
             case "厨师":
-                if (bFirstToCool) {
+                if (bFirstToCook) {
                     flowChart.ExecuteBlock("Cook_First");
-                    bFirstToCool = false;
+                    bFirstToCook = false;
                 } else {
                     if (l1Manager.isGetEgg && l1Manager.isGetStrawbbry) {
                         flowChart.ExecuteBlock("Cook_Both");
@@ -64,6 +69,22 @@ public sealed class Player_L1 : Player
                 break;
             case "草莓花":
                 flowChart.ExecuteBlock("ROBO_草莓花");
+                break;
+            case "士兵":
+                if (bFirstToSoldier) {
+                    flowChart.ExecuteBlock("士兵_First");
+                    bFirstToSoldier = false;
+                } else {
+                    if (l1Manager.isGetTomato) {
+                        flowChart.ExecuteBlock("士兵_获得红颜料");
+
+                    } else {
+                        flowChart.ExecuteBlock("士兵_Repeat");
+                    }
+                }
+                break;
+            case "番茄":
+                flowChart.ExecuteBlock("番茄");
                 break;
         }
     }

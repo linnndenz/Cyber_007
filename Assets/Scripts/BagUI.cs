@@ -38,7 +38,7 @@ public class BagUI : MonoBehaviour
     #region hold/use/pick
     public void ClickSlot(int index)
     {
-        if (slots[index].IsChosen) {
+        if (index >= 0 && slots[index].IsChosen) {
             //调用bag的HoldItem函数
             Player.Instance.HoldItem(index);
             //重置slot的IsChosen
@@ -64,19 +64,21 @@ public class BagUI : MonoBehaviour
         ReFresh();
     }
     //Pick，player调用
-    public void Refresh_PickItem(int lashindex)
+    public void Refresh_PickItem(int lastindex)
     {
-        slots[lashindex].IsChosen = true;
-        ClickSlot(lashindex);
+        if (lastindex >= 0) {
+            slots[lastindex].IsChosen = true;
+        }
+        ClickSlot(lastindex);
         ReFresh();
     }
     #endregion
 
     #region 刷新
-    public void ReFresh()
+    private void ReFresh()
     {
         List<Item> items = bag.GetItemList();
-        if(items.Count>slots.Length) print("持有物长度超过背包长度");
+        if (items.Count > slots.Length) print("持有物长度超过背包长度");
         for (int i = 0; i < slots.Length; i++) {
             if (i < items.Count) {
                 slots[i].Ico.sprite = items[i].ico;

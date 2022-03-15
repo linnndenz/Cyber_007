@@ -12,6 +12,8 @@ public abstract class LevelManager : MonoBehaviour
 
     public Flowchart flowChart;
 
+    public Player player;
+
     #region 数据
     public Bag bag = new Bag();
     #endregion //数据
