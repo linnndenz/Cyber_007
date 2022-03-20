@@ -1,13 +1,16 @@
 using BagDataManager;
+using DG.Tweening;
 using Fungus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public sealed class LevelManager_L1 : LevelManager
 {
+    public Transform startPos;
     public BoxCollider2D cook;
     //花-草莓
     public BoxCollider2D flower;
@@ -30,17 +33,16 @@ public sealed class LevelManager_L1 : LevelManager
     public Transform gardenLPos;
     public GameObject gateLock;
 
-    //红颜料
-    public BoxCollider2D tomato;
-    public bool isGetTomato = false;
 
     //镜子
     public GameObject kidvva;
     public GameObject hurtvva;
 
+
     private void Awake()
     {
         Instance = this;
+        player.transform.position = startPos.position;
     }
 
     public override void InitItems()
@@ -52,7 +54,29 @@ public sealed class LevelManager_L1 : LevelManager
         item_dict.Add("鸡蛋", new Item("鸡蛋", true, Resources.Load<Sprite>("Texture_L1/鸡蛋"), null, null, null));
         item_dict.Add("孤儿院大门钥匙", new Item("孤儿院大门钥匙", true, Resources.Load<Sprite>("Texture_L1/孤儿院大门钥匙"), null, OpenGate, null));
         item_dict.Add("红颜料", new Item("红颜料", true, Resources.Load<Sprite>("Texture_L1/红颜料"), null, null, null));
+
+        redQueen.GetComponent<BoxCollider2D>().enabled = false;
     }
+
+    #region 镜子
+    public GameObject mirrorImg;
+    //bool isFirstOpenMirror = true;
+    public void OpenMirror()
+    {
+        //if (!isFirstOpenMirror) return;
+
+        mirrorImg.SetActive(true);
+        player.Froze();
+        kidvva.SetActive(false);
+        hurtvva.SetActive(true);
+        player.animator = player.GetComponentInChildren<Animator>();
+        flowChart.ExecuteBlock("镜子");
+    }
+    public void CloseMirrorImg()
+    {
+        mirrorImg.SetActive(false);
+    }
+    #endregion
 
     #region 罐子
     public bool UseBottle(string toname)
@@ -61,6 +85,8 @@ public sealed class LevelManager_L1 : LevelManager
 
         flower.enabled = false;
         strawberry.SetActive(true);
+        audioManager.PlaySE(1);
+
         return true;
     }
 
@@ -81,6 +107,7 @@ public sealed class LevelManager_L1 : LevelManager
     {
         if (toname != "公鸡的雕像" || isGetEgg) return false;
         if (!eggUI.activeSelf) return false;
+        audioManager.PlaySE(2);
         egg.SetActive(true);
         isGetEgg = true;
         cock.enabled = false;
@@ -147,7 +174,8 @@ public sealed class LevelManager_L1 : LevelManager
     {
         if (toname != "孤儿院大门") return false;
         gateLock.SetActive(false);
-        Invoke(nameof(OnOpenGate), 2f);
+        player.Froze();
+        Invoke(nameof(OnOpenGate), 1.5f);
         return true;
     }
     private void OnOpenGate()
@@ -156,11 +184,18 @@ public sealed class LevelManager_L1 : LevelManager
         garden.SetActive(true);
         player.transform.position = gardenLPos.position;
         player.DeFroze();
+
+        Manager.Instance.ChangeBGM(0);
     }
 
     #endregion
 
     #region 番茄
+    //红颜料
+    public BoxCollider2D tomato;
+    public bool isGetTomato = false;
+    public GameObject redRose;
+    public GameObject ironRose;
     public void GetTomato()
     {
         bag.AddItem(item_dict["红颜料"]);//背包数据更新
@@ -172,6 +207,111 @@ public sealed class LevelManager_L1 : LevelManager
     {
         bag.RemoveItem(item_dict["红颜料"]);
         BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
+        redRose.SetActive(true);
+        redQueen.GetComponent<BoxCollider2D>().enabled = true;
+    }
+    #endregion
+
+    #region 红皇后
+    public Transform redQueen;
+    public Transform toRosePos;
+    public GameObject soldier;
+    public GameObject hospitalBox;
+
+    public void GotoRose()
+    {
+        player.footstepAudio.Play();
+        redQueen.GetComponent<BoxCollider2D>().enabled = false;
+        player.transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        player.animator.SetBool("xMove", true);
+        player.transform.DOMoveX(toRosePos.position.x, 5f);
+        redQueen.DOMoveX(toRosePos.position.x + 3, 5f).OnComplete(() => {
+            hospitalBox.SetActive(true);
+            flowChart.ExecuteBlock("红皇后2");
+            player.animator.SetBool("xMove", false);
+            player.footstepAudio.Stop();
+        });
+    }
+    public void StartChaseVva()
+    {
+        soldier.SetActive(true);
+    }
+
+    public Transform hospitalGate;
+    public Image black;
+    public GameObject hospitalUI;
+    public void OpenHospitalGate()
+    {
+        player.Froze();
+        soldier.SetActive(false);
+        hospitalGate.DOMoveX(hospitalGate.transform.position.x + 3.5f, 2f).OnComplete(() => {
+            black.color = new Color(0, 0, 0, 0);
+            black.gameObject.SetActive(true);
+            black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+                player.gameObject.SetActive(false);
+                garden.SetActive(false);
+                hospitalUI.SetActive(true);
+                black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                    black.gameObject.SetActive(false);
+                    flowChart.ExecuteBlock("进入医院");
+                    Manager.Instance.ChangeBGM(-1);
+                });
+            });
+        });
+    }
+    #endregion
+
+    #region 医院
+    bool istvopened = false;
+    public void OpenTV()
+    {
+        if (istvopened) return;
+        istvopened = true;
+        flowChart.ExecuteBlock("电视前");
+    }
+    public void ContinueTV()
+    {
+        black.color = new Color(0, 0, 0, 0);
+        black.gameObject.SetActive(true);
+        black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+            black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                black.gameObject.SetActive(false);
+                flowChart.ExecuteBlock("电视");
+                Manager.Instance.ChangeBGM(2);
+            });
+        });
+    }
+
+
+    #endregion
+
+    #region 舞台
+    public GameObject chooseHatUI;
+    public void ChoseHat()
+    {
+        black.color = new Color(0, 0, 0, 0);
+        black.gameObject.SetActive(true);
+        black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+            hospitalUI.SetActive(false);
+            chooseHatUI.SetActive(true);
+
+            black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                black.gameObject.SetActive(false);
+                flowChart.ExecuteBlock("选择帽子前");
+            });
+        });
+    }
+
+    public void End()
+    {
+        black.color = new Color(0, 0, 0, 0);
+        black.gameObject.SetActive(true);
+        black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+            black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                black.gameObject.SetActive(false);
+                flowChart.ExecuteBlock("End");
+            });
+        });
     }
     #endregion
 }

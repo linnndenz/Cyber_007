@@ -25,7 +25,7 @@ public sealed class Player_L1 : Player
         if (Input.GetKeyDown(KeyCode.E) && coll && coll.CompareTag(INTERACTIVEITEM)) {
             switch (coll.name) {
                 case "镜子":
-
+                    l1Manager.OpenMirror();
                     break;
                 case "书":
                     l1Manager.OpenBook();
@@ -38,6 +38,18 @@ public sealed class Player_L1 : Player
                     break;
                 case "公鸡的雕像":
                     l1Manager.OpenEggUI();
+                    break;
+                case "医院门":
+                    l1Manager.OpenHospitalGate();
+                    break;
+                case "死门":
+                    l1Manager.audioManager.PlaySE(4);
+                    break;
+                case "孤儿院大门":
+                    if(!froze) l1Manager.audioManager.PlaySE(4);
+                    break;
+                case "办公室大门":
+                    if (!froze) l1Manager.audioManager.PlaySE(5);
                     break;
 
             }
@@ -53,6 +65,9 @@ public sealed class Player_L1 : Player
         switch (coll.name) {
             case "小孩A":
                 flowChart.ExecuteBlock("小孩A");
+                break;
+            case "小孩B":
+                flowChart.ExecuteBlock("小孩B");
                 break;
             case "厨师":
                 if (bFirstToCook) {
@@ -85,6 +100,9 @@ public sealed class Player_L1 : Player
                 break;
             case "番茄":
                 flowChart.ExecuteBlock("番茄");
+                break;
+            case "红皇后":
+                flowChart.ExecuteBlock("红皇后");
                 break;
         }
     }

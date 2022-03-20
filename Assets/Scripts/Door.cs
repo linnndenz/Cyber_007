@@ -20,6 +20,7 @@ public class Door : MonoBehaviour
     public void GetIn(Transform player)
     {
         Player.Instance.Froze();
+        LevelManager.Instance.audioManager.PlaySE(3);
         door.DOMoveX(door.position.x + 2, 0.5f).OnComplete(
             () => {
                 close.SetActive(false);

@@ -16,6 +16,7 @@ public class AliceBook : MonoBehaviour
     }
     public void TurnPage()
     {
+        LevelManager.Instance.audioManager.PlaySE(0);
         index = (index + 1) % 3;
 
         for (int i = 0; i < 3; i++) {

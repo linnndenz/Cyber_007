@@ -10,10 +10,12 @@ public abstract class Player : MonoBehaviour
     public static Player Instance { get; protected set; }
 
     #region 预设
+    [HideInInspector]public AudioSource footstepAudio;
     [SerializeField] protected LevelManager levelManager;
-    [SerializeField] float speed;
-    private bool froze;
+    public float speed;
+    [HideInInspector] public bool froze;
     private bool frozeMove;
+    private bool frozeInput;
     protected SpriteRenderer holdingSr;
     public Flowchart flowChart;
     #endregion
@@ -31,10 +33,11 @@ public abstract class Player : MonoBehaviour
     {
         holdingSr = transform.Find("Hold").GetComponent<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
+        footstepAudio = GetComponent<AudioSource>();
     }
 
     protected virtual void Update()
-    { 
+    {
         //动画
         SwitchAnim();
         //玩家Froze！！
@@ -83,7 +86,7 @@ public abstract class Player : MonoBehaviour
     }
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag(PLAYER)) {
+        if (!collision.CompareTag(PLAYER) && collision == coll) {
             coll = null;
         }
     }
@@ -102,7 +105,7 @@ public abstract class Player : MonoBehaviour
         froze = true;
     }
 
-    
+
     public void DeFroze()
     {
         froze = false;
@@ -117,21 +120,37 @@ public abstract class Player : MonoBehaviour
         frozeMove = false;
     }
 
+    public void FrozeInput()
+    {
+        frozeInput = true;
+    }
+
+    public void DeFrozeInput()
+    {
+        frozeInput = false;
+    }
     #region 移动
     float xMove = 0;
     private void Move()
     {
-        if (froze||frozeMove) xMove = 0;
+        if (frozeInput) return;
+        if (froze || frozeMove) xMove = 0;
         else xMove = Input.GetAxisRaw("Horizontal") * speed * Time.fixedDeltaTime;
         transform.position += new Vector3(xMove, 0, 0);
 
-        //转向
+        //转向 + 音效
         if (Mathf.Abs(xMove) > 0.001f) {
             if (xMove > 0)
                 transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             else
                 transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
+            if (!footstepAudio.isPlaying) footstepAudio.Play();
+        } else {
+            footstepAudio.Stop();
         }
+
+
     }
     #endregion
 
@@ -140,6 +159,7 @@ public abstract class Player : MonoBehaviour
     readonly string XMOVE = "xMove";
     private void SwitchAnim()
     {
+        if (frozeInput) return;
         if (Mathf.Abs(xMove) > 0.01f) {
             animator.SetBool(XMOVE, true);
         } else {
@@ -183,7 +203,8 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 对话
-    protected virtual void Talk() {
+    protected virtual void Talk()
+    {
         Froze();
     }
 

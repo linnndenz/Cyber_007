@@ -14,6 +14,8 @@ public abstract class LevelManager : MonoBehaviour
 
     public Player player;
 
+    public AudioManager audioManager;
+
     #region 数据
     public Bag bag = new Bag();
     #endregion //数据
