@@ -262,31 +262,40 @@ public sealed class LevelManager_L1 : LevelManager
     #endregion
 
     #region 医院
-    bool istvopened = false;
+    public GameObject carAccident;
     public void OpenTV()
     {
-        if (istvopened) return;
-        istvopened = true;
-        flowChart.ExecuteBlock("电视前");
+        audioManager.PlaySE(8);
+        carAccident.SetActive(true);
     }
+    public Transform lDoor;
+    public Transform lDoorPos;
+    public Transform rDoor;
+    public Transform rDoorPos;
     public void ContinueTV()
     {
+        Manager.Instance.ChangeBGM(1);
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+            carAccident.SetActive(false);
             black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                lDoor.DOMoveX(lDoorPos.position.x, 1.5f);
+                rDoor.DOMoveX(rDoorPos.position.x, 1.5f);
                 black.gameObject.SetActive(false);
                 flowChart.ExecuteBlock("电视");
-                Manager.Instance.ChangeBGM(2);
-            });
+            }).SetDelay(0.5f);
         });
     }
+
+    
 
 
     #endregion
 
     #region 舞台
     public GameObject chooseHatUI;
+    
     public void ChoseHat()
     {
         black.color = new Color(0, 0, 0, 0);
@@ -298,19 +307,28 @@ public sealed class LevelManager_L1 : LevelManager
             black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
                 black.gameObject.SetActive(false);
                 flowChart.ExecuteBlock("选择帽子前");
-            });
+            }).SetDelay(0.5f);
         });
     }
 
+    public CanvasGroup hat;
+    public void OpenHat()
+    {
+        hat.alpha = 0;
+        hat.gameObject.SetActive(true);
+        DOTween.To(() => hat.alpha, x => hat.alpha = x, 1, 1.5f);
+    }
+    public GameObject stage;
     public void End()
     {
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+            stage.SetActive(true);
             black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
                 black.gameObject.SetActive(false);
                 flowChart.ExecuteBlock("End");
-            });
+            }).SetDelay(0.5f);
         });
     }
     #endregion
