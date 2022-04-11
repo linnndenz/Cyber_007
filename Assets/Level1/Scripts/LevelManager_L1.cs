@@ -196,6 +196,7 @@ public sealed class LevelManager_L1 : LevelManager
     public bool isGetTomato = false;
     public GameObject redRose;
     public GameObject ironRose;
+    public Animator soldierAAnimator;
     public void GetTomato()
     {
         bag.AddItem(item_dict["红颜料"]);//背包数据更新
@@ -209,6 +210,7 @@ public sealed class LevelManager_L1 : LevelManager
         BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
         redRose.SetActive(true);
         redQueen.GetComponent<BoxCollider2D>().enabled = true;
+        soldierAAnimator.SetBool("paint", true);
     }
     #endregion
 
@@ -217,18 +219,21 @@ public sealed class LevelManager_L1 : LevelManager
     public Transform toRosePos;
     public GameObject soldier;
     public GameObject hospitalBox;
-
+    public Animator redQueenAnimator;
     public void GotoRose()
     {
+        soldierAAnimator.SetBool("paint", false);
         player.footstepAudio.Play();
         redQueen.GetComponent<BoxCollider2D>().enabled = false;
         player.transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         player.animator.SetBool("xMove", true);
-        player.transform.DOMoveX(toRosePos.position.x, 5f);
-        redQueen.DOMoveX(toRosePos.position.x + 3, 5f).OnComplete(() => {
+        redQueenAnimator.SetBool("xMove", true);
+        player.transform.DOMoveX(toRosePos.position.x, 4f);
+        redQueen.DOMoveX(toRosePos.position.x + 3, 4f).OnComplete(() => {
             hospitalBox.SetActive(true);
             flowChart.ExecuteBlock("红皇后2");
             player.animator.SetBool("xMove", false);
+            redQueenAnimator.SetBool("xMove", false);
             player.footstepAudio.Stop();
         });
     }
@@ -272,6 +277,7 @@ public sealed class LevelManager_L1 : LevelManager
     public Transform lDoorPos;
     public Transform rDoor;
     public Transform rDoorPos;
+    public GameObject[] doctors;
     public void ContinueTV()
     {
         Manager.Instance.ChangeBGM(1);
@@ -279,6 +285,9 @@ public sealed class LevelManager_L1 : LevelManager
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
             carAccident.SetActive(false);
+            doctors[0].SetActive(true);
+            doctors[1].SetActive(true);
+            doctors[2].SetActive(true);
             black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
                 lDoor.DOMoveX(lDoorPos.position.x, 1.5f);
                 rDoor.DOMoveX(rDoorPos.position.x, 1.5f);
@@ -288,14 +297,14 @@ public sealed class LevelManager_L1 : LevelManager
         });
     }
 
-    
+
 
 
     #endregion
 
     #region 舞台
     public GameObject chooseHatUI;
-    
+
     public void ChoseHat()
     {
         black.color = new Color(0, 0, 0, 0);

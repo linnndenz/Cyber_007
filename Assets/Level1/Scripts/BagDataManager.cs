@@ -10,7 +10,7 @@ namespace BagDataManager
     {
         private List<Item> item_list = new List<Item>();
 
-        public int HoldingItemIndex { get; private set; }
+        public int HoldingItemIndex { get; private set; } = -1;
 
         public void AddItem(Item item)
         {

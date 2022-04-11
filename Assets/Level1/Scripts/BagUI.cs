@@ -3,6 +3,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //物品hold都由此检测，再传递数据给Player
 public class BagUI : MonoBehaviour
@@ -10,12 +11,10 @@ public class BagUI : MonoBehaviour
     public static BagUI Instance { get; protected set; }
 
     [Header("显示")]
-    [SerializeField] private Transform chosenImg;
+    [SerializeField] private Color chosenColor;
     [SerializeField] private Transform slotParent;
     private Slot[] slots;
     [SerializeField] private Transform bagPanel;
-    [SerializeField] private Transform upPos;
-    [SerializeField] private Transform downPos;
 
     [Header("数据")]
     private Bag bag;
@@ -43,19 +42,22 @@ public class BagUI : MonoBehaviour
             Player.Instance.HoldItem(index);
             //重置slot的IsChosen
             for (int i = 0; i < slots.Length; i++) {
-                if (i != index) slots[i].IsChosen = false;
+                if (i != index) {
+                    slots[i].IsChosen = false;
+                    slots[i].GetComponent<Image>().color = Color.white;
+                } else {
+                    slots[i].GetComponent<Image>().color = chosenColor;
+                }
             }
-            //选择图标
-            chosenImg.gameObject.SetActive(true);
-            chosenImg.position = slots[index].transform.position;
+
         } else {
             Player.Instance.HoldItem(-1);
 
             for (int i = 0; i < slots.Length; i++) {
                 slots[i].IsChosen = false;
+                slots[i].GetComponent<Image>().color = Color.white;
             }
 
-            chosenImg.gameObject.SetActive(false);
         }
     }
     //use，player调用
@@ -82,39 +84,22 @@ public class BagUI : MonoBehaviour
         for (int i = 0; i < slots.Length; i++) {
             if (i < items.Count) {
                 slots[i].Ico.sprite = items[i].ico;
+                slots[i].Ico.gameObject.SetActive(true);
             } else {
                 slots[i].Ico.sprite = null;
+                slots[i].Ico.gameObject.SetActive(false);
             }
         }
         //重置slot的IsChosen
         for (int i = 0; i < Instance.slots.Length; i++) {
-            if (i != bag.HoldingItemIndex) Instance.slots[i].IsChosen = false;
-        }
-        if (bag.HoldingItemIndex == -1) {
-            chosenImg.gameObject.SetActive(false);
+            if (i != bag.HoldingItemIndex) {
+                Instance.slots[i].IsChosen = false;
+                Instance.slots[i].GetComponent<Image>().color = Color.white;
+            } else {
+                Instance.slots[i].GetComponent<Image>().color = Instance.chosenColor;
+            }
         }
     }
     #endregion
 
-
-    #region 背包收起放下
-    bool isDown = true;
-    public void Drawer()
-    {
-        isDown = !isDown;
-        if (isDown) {
-            BagDown();
-        } else {
-            BagUp();
-        }
-    }
-    public static void BagDown()
-    {
-        Instance.bagPanel.DOMoveY(Instance.downPos.position.y, 0.3f);
-    }
-    public static void BagUp()
-    {
-        Instance.bagPanel.DOMoveY(Instance.upPos.position.y, 0.3f);
-    }
-    #endregion
 }

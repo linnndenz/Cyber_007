@@ -525,6 +525,8 @@ namespace Fungus
             {
                 onComplete();
             }
+            //print("change here");
+
         }
 
         protected virtual IEnumerator DoWords(List<string> paramList, TokenType previousTokenType)

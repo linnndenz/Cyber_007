@@ -8,6 +8,7 @@ public class Manager : MonoBehaviour
     private AudioClip[] bgms;
     private AudioSource bgmAudio;
 
+
     void Awake()
     {
         if (Instance == null) {

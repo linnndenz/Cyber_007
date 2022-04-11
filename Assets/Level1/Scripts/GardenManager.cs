@@ -31,7 +31,7 @@ public class GardenManager : MonoBehaviour
     {
         float x = player.position.x - (-0.8f);
         if (x < 0) x = 0.01f;
-        if (x > 20.73f) x = 20.72f;
+        if (x > 25.35f) x = 25.35f;
         mainCam.position = new Vector3(x, mainCam.position.y, mainCam.position.z);
 
         backfar.position = new Vector3(initBackfar + x * 0.5f, backfar.position.y, backfar.position.z);

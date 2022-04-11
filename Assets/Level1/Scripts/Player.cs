@@ -63,6 +63,7 @@ public abstract class Player : MonoBehaviour
 
         //使用物品
         if (Input.GetKeyDown(KeyCode.R)) {
+            if (holdingSr.sprite == null) return;
             holdingSr.transform.DOPunchScale(new Vector3(0.5f, 0.5f, 1), 0.2f);
             if (coll && coll.CompareTag(INTERACTIVEITEM)) {
                 UseItem(coll.name);

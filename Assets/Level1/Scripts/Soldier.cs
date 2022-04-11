@@ -12,6 +12,7 @@ public class Soldier : MonoBehaviour
     float speed;
     public Transform playerInitPos;
     public Flowchart flowChart;
+    public Animator[] animators;
 
     void Start()
     {
@@ -22,6 +23,9 @@ public class Soldier : MonoBehaviour
     {
         initPosX = transform.parent.position.x;
         transform.parent.tag = "Untagged";
+
+        animators[0].SetBool("xMove", true);
+        animators[1].SetBool("xMove", true);
     }
 
     void OnDisable()
