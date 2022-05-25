@@ -18,6 +18,7 @@ public sealed class Player_L1 : Player
     }
 
 
+    public bool isHos;
     protected override void Update()
     {
         base.Update();
@@ -39,14 +40,11 @@ public sealed class Player_L1 : Player
                 case "公鸡的雕像":
                     l1Manager.OpenEggUI();
                     break;
-                case "医院门":
-                    l1Manager.OpenHospitalGate();
-                    break;
                 case "死门":
                     l1Manager.audioManager.PlaySE(4);
                     break;
                 case "孤儿院大门":
-                    if(!froze) l1Manager.audioManager.PlaySE(4);
+                    if (!froze) l1Manager.audioManager.PlaySE(4);
                     break;
                 case "办公室大门":
                     if (!froze) l1Manager.audioManager.PlaySE(5);
@@ -55,6 +53,11 @@ public sealed class Player_L1 : Player
             }
         }
 
+
+        if (coll != null && coll.name == "医院门" &&!isHos) {
+            l1Manager.OpenHospitalGate();
+            isHos = true;
+        }
     }
 
     bool bFirstToCook = true;

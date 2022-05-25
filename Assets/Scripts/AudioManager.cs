@@ -34,12 +34,24 @@ public abstract class AudioManager : MonoBehaviour
     //音效播放
     public void PlaySE(int index)
     {
+        if (ses == null || index < 0 || index >= ses.Length) return;
+
         print("播放音效" + index.ToString());
         sePlayers[sePlayerIndex].clip = ses[index];
         sePlayers[sePlayerIndex].Play();
 
         sePlayerIndex = (sePlayerIndex + 1) % sePlayers.Length;
     }
-    
+    public void PlaySE(AudioClip clip)
+    {
+        if (ses == null || clip == null) return;
+
+        print("播放音效" + clip);
+        sePlayers[sePlayerIndex].clip = clip;
+        sePlayers[sePlayerIndex].Play();
+
+        sePlayerIndex = (sePlayerIndex + 1) % sePlayers.Length;
+    }
+
 }
 

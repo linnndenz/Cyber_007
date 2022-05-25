@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ChooseHat : MonoBehaviour
 {
     public GameObject[] hats;
+    public GameObject[] chosenHats;
     int currChosen = -1;
     public Flowchart flowChart;
     public void Choose(int index)
@@ -15,8 +16,10 @@ public class ChooseHat : MonoBehaviour
         for (int i = 0; i < 3; i++) {
             if (i != index) {
                 hats[i].SetActive(true);
+                chosenHats[i].SetActive(false);
             } else {
                 hats[i].SetActive(false);
+                chosenHats[i].SetActive(true);
             }
         }
     }

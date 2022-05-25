@@ -31,7 +31,7 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKey(KeyCode.LeftControl)&&Input.GetKey(KeyCode.C)) {
             Application.Quit();
         }
     }

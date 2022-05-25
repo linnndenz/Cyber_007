@@ -54,9 +54,26 @@ public sealed class LevelManager_L1 : LevelManager
         item_dict.Add("鸡蛋", new Item("鸡蛋", true, Resources.Load<Sprite>("Texture_L1/鸡蛋"), null, null, null));
         item_dict.Add("孤儿院大门钥匙", new Item("孤儿院大门钥匙", true, Resources.Load<Sprite>("Texture_L1/孤儿院大门钥匙"), null, OpenGate, null));
         item_dict.Add("红颜料", new Item("红颜料", true, Resources.Load<Sprite>("Texture_L1/红颜料"), null, null, null));
+        item_dict.Add("相片", new Item("相片", true, Resources.Load<Sprite>("Texture_L1/相片"), null, null, null,true,OpenPhoto));
 
         redQueen.GetComponent<BoxCollider2D>().enabled = false;
     }
+
+    #region 相片
+    [Header("相片")]
+    public GameObject photo;
+    public bool OpenPhoto()
+    {
+        photo.SetActive(true);
+        player.Froze();
+        return true;
+    }
+    public void GetPhoto()
+    {
+        bag.AddItem(item_dict["相片"]);
+        BagUI.Instance.Refresh_UseItem();
+    }
+    #endregion
 
     #region 镜子
     public GameObject mirrorImg;
@@ -90,15 +107,17 @@ public sealed class LevelManager_L1 : LevelManager
         return true;
     }
 
-    public void GetBottle()
+    public bool GetBottle()
     {
         player.Froze();
         flowChart.ExecuteBlock("ROBO_床下的罐子");
+        return true;
     }
 
-    public void GetStrawberry()
+    public bool GetStrawberry()
     {
         isGetStrawbbry = true;
+        return true;
     }
     #endregion
 
@@ -207,7 +226,7 @@ public sealed class LevelManager_L1 : LevelManager
     public void LoseTomato()
     {
         bag.RemoveItem(item_dict["红颜料"]);
-        BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
+        BagUI.Instance.Refresh_PickItem(-1);//背包UI更新
         redRose.SetActive(true);
         redQueen.GetComponent<BoxCollider2D>().enabled = true;
         soldierAAnimator.SetBool("paint", true);
@@ -222,6 +241,7 @@ public sealed class LevelManager_L1 : LevelManager
     public Animator redQueenAnimator;
     public void GotoRose()
     {
+        Invoke("IronRose", 3f);
         soldierAAnimator.SetBool("paint", false);
         player.footstepAudio.Play();
         redQueen.GetComponent<BoxCollider2D>().enabled = false;
@@ -236,6 +256,10 @@ public sealed class LevelManager_L1 : LevelManager
             redQueenAnimator.SetBool("xMove", false);
             player.footstepAudio.Stop();
         });
+    }
+    public void IronRose()
+    {
+        ironRose.SetActive(true);
     }
     public void StartChaseVva()
     {
@@ -298,8 +322,6 @@ public sealed class LevelManager_L1 : LevelManager
     }
 
 
-
-
     #endregion
 
     #region 舞台
@@ -320,25 +342,23 @@ public sealed class LevelManager_L1 : LevelManager
         });
     }
 
-    public CanvasGroup hat;
-    public void OpenHat()
-    {
-        hat.alpha = 0;
-        hat.gameObject.SetActive(true);
-        DOTween.To(() => hat.alpha, x => hat.alpha = x, 1, 1.5f);
-    }
     public GameObject stage;
     public void End()
     {
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
-        black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
+        black.DOColor(new Color(0, 0, 0, 1), 3f).OnComplete(() => {
             stage.SetActive(true);
-            black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+            black.DOColor(new Color(0, 0, 0, 0), 3f).OnComplete(() => {
                 black.gameObject.SetActive(false);
                 flowChart.ExecuteBlock("End");
             }).SetDelay(0.5f);
         });
     }
     #endregion
+
+    public void GoInterlude2()
+    {
+        SceneManager.LoadScene("Interlude2");
+    }
 }

@@ -63,11 +63,14 @@ namespace BagDataManager
         public bool isOnce;
         public Sprite ico;
         //public abstract Sprite Ico { get; }
-        public Action Get;
-        public Func<string,bool> Use;
+        public Func<bool> Get;
+        public Func<string, bool> Use;
         public Func<bool> Hold;
 
-        public Item(string nname, bool iisOnce, Sprite iico, Action gget, Func<string,bool> uuse, Func<bool> hhold)
+        public bool isRead;//第三关，是否直接阅读
+        public Func<bool> Read;
+
+        public Item(string nname, bool iisOnce, Sprite iico, Func<bool> gget, Func<string, bool> uuse, Func<bool> hhold, bool iisRead = false, Func<bool> rread = null)
         {
             name = nname;
             isOnce = iisOnce;
@@ -76,6 +79,9 @@ namespace BagDataManager
             Get = gget;
             Use = uuse;
             Hold = hhold;
+
+            isRead = iisRead;
+            Read = rread;
         }
 
     }

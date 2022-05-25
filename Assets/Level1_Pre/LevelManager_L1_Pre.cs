@@ -21,10 +21,24 @@ public class LevelManager_L1_Pre : LevelManager
         player.Froze();
     }
 
+    public GameObject rTip;
+    public SpriteRenderer hold;
+    bool isR;
+    void Update()
+    {
+        if (hold.sprite != null && !isR) {
+            if (!rTip.activeSelf) {
+                rTip.SetActive(true);
+            }
+        } else {
+            rTip.SetActive(false);
+        }
+    }
 
     public bool UseShrinkLiquid(string toname)
     {
         if (toname != "×Ô¼º") return false;
+        isR = true;
         player.Froze();
         Vector3 initScale = player.transform.localScale;
         black.color = new Color(0, 0, 0, 0);
@@ -33,9 +47,9 @@ public class LevelManager_L1_Pre : LevelManager
         anims.Append(player.transform.DOScale(initScale * 0.7f, 0.5f));
         anims.Append(player.transform.DOScale(initScale * 0.3f, 0.5f));
         anims.Append(player.transform.DOScale(initScale * 0.5f, 0.5f));
-        anims.Append(player.transform.DOScale(initScale * 0.3f, 0.5f).OnComplete(()=>black.gameObject.SetActive(true)));
+        anims.Append(player.transform.DOScale(initScale * 0.3f, 0.5f).OnComplete(() => black.gameObject.SetActive(true)));
         anims.Append(black.DOColor(new Color(0, 0, 0, 1), 1f));
-        anims.OnComplete(()=>SceneManager.LoadScene("Scene_Level1"));
+        anims.OnComplete(() => SceneManager.LoadScene("Scene_Level1"));
         anims.Play();
         return true;
     }

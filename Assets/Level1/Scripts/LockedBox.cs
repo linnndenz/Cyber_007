@@ -29,6 +29,7 @@ public class LockedBox : MonoBehaviour
             levelManager.audioManager.PlaySE(7);
             bOpen = true;
             levelManager.GetGateKey();
+            levelManager.GetPhoto();
             flowChart.ExecuteBlock("ROBO_ÃÜÂëºÐ´ò¿ª");
         }
     }

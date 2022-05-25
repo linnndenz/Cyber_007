@@ -7,20 +7,34 @@ using UnityEngine.UI;
 
 public class Soldier : MonoBehaviour
 {
+    public bool missQteBlock;//qteÊ§°Ü
+    public GameObject qte;
+
     public Image black;
     public float initPosX;
     float speed;
     public Transform playerInitPos;
     public Flowchart flowChart;
     public Animator[] animators;
+    public Transform player;
 
     void Start()
     {
-        speed = Player.Instance.speed * 0.8f;
+        speed = Player.Instance.speed;
     }
 
     void OnEnable()
     {
+        qte.SetActive(true);
+        missQteBlock = false;
+        once = false;
+        once = false;
+        once = false;
+        isChased = false;
+        Player.Instance.animator.SetBool("xMove", true);
+        Player.Instance.footstepAudio.Play();
+        player.localScale = new Vector3(1, 1, 1);
+
         initPosX = transform.parent.position.x;
         transform.parent.tag = "Untagged";
 
@@ -28,25 +42,30 @@ public class Soldier : MonoBehaviour
         animators[1].SetBool("xMove", true);
     }
 
-    void OnDisable()
-    {
-        speed = Player.Instance.speed * 0.8f;
-    }
 
     void FixedUpdate()
     {
+        if (isChased) return;
         Chase();
+    }
+
+    private void OnDisable()
+    {
+        qte.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) {
-            speed = 0;
-            Player.Instance.Froze();
-            black.gameObject.SetActive(true);
+        if (collision.CompareTag("Player") && !isChased) {
+            //speed = 0;
+            qte.SetActive(false);
+            isChased = true;
+
             black.color = new Color(0, 0, 0, 0);
+            black.gameObject.SetActive(true);
             black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
-                Player.Instance.transform.position = playerInitPos.position;
+                Player.Instance.animator.Play("Idle", 0);
+                player.position = playerInitPos.position;
                 transform.parent.position = new Vector3(initPosX, transform.parent.position.y, transform.parent.position.z);
                 black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
                     black.gameObject.SetActive(false);
@@ -57,8 +76,21 @@ public class Soldier : MonoBehaviour
         }
     }
 
+    public bool isChased;
+    public bool once;
     public void Chase()
     {
-        transform.parent.position += new Vector3(speed * Time.fixedDeltaTime, 0, 0);
+        transform.parent.position += new Vector3(speed / 2 * Time.fixedDeltaTime, 0, 0);
+        if (missQteBlock) {
+            if (!once) {
+                Player.Instance.animator.SetTrigger("fall");
+                Player.Instance.animator.SetBool("xMove", false);
+                Player.Instance.footstepAudio.Stop();
+                once = true;
+            }
+
+        } else {
+            player.position += new Vector3(Player.Instance.speed / 2 * Time.fixedDeltaTime, 0, 0);
+        }
     }
 }

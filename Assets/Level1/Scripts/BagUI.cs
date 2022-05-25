@@ -11,21 +11,21 @@ public class BagUI : MonoBehaviour
     public static BagUI Instance { get; protected set; }
 
     [Header("显示")]
-    [SerializeField] private Color chosenColor;
-    [SerializeField] private Transform slotParent;
-    private Slot[] slots;
-    [SerializeField] private Transform bagPanel;
+    [SerializeField] protected Color chosenColor;
+    [SerializeField] protected Transform slotParent;
+    protected Slot[] slots;
+    [SerializeField] protected Transform bagPanel;
 
     [Header("数据")]
-    private Bag bag;
+    protected Bag bag;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //创建单例
         if (Instance != null) Destroy(gameObject);
         Instance = this;
     }
-    void Start()
+    protected virtual void Start()
     {
         //数据初始化
         bag = LevelManager.GetBag();
@@ -35,29 +35,34 @@ public class BagUI : MonoBehaviour
 
 
     #region hold/use/pick
-    public void ClickSlot(int index)
+    public virtual void ClickSlot(int index)
     {
-        if (index >= 0 && slots[index].IsChosen) {
-            //调用bag的HoldItem函数
-            Player.Instance.HoldItem(index);
-            //重置slot的IsChosen
-            for (int i = 0; i < slots.Length; i++) {
-                if (i != index) {
+        //阅读的物品
+        if (index >= 0 && index < bag.GetItemList().Count && bag.GetItemList()[index].isRead) {
+            bag.GetItemList()[index].Read();
+        } else {
+            if (index >= 0 && slots[index].IsChosen) {
+                //调用bag的HoldItem函数
+                Player.Instance.HoldItem(index);
+                //重置slot的IsChosen
+                for (int i = 0; i < slots.Length; i++) {
+                    if (i != index) {
+                        slots[i].IsChosen = false;
+                        slots[i].GetComponent<Image>().color = Color.white;
+                    } else {
+                        slots[i].GetComponent<Image>().color = chosenColor;
+                    }
+                }
+
+            } else {
+                Player.Instance.HoldItem(-1);
+
+                for (int i = 0; i < slots.Length; i++) {
                     slots[i].IsChosen = false;
                     slots[i].GetComponent<Image>().color = Color.white;
-                } else {
-                    slots[i].GetComponent<Image>().color = chosenColor;
                 }
+
             }
-
-        } else {
-            Player.Instance.HoldItem(-1);
-
-            for (int i = 0; i < slots.Length; i++) {
-                slots[i].IsChosen = false;
-                slots[i].GetComponent<Image>().color = Color.white;
-            }
-
         }
     }
     //use，player调用
@@ -77,7 +82,7 @@ public class BagUI : MonoBehaviour
     #endregion
 
     #region 刷新
-    private void ReFresh()
+    protected void ReFresh()
     {
         List<Item> items = bag.GetItemList();
         if (items.Count > slots.Length) print("持有物长度超过背包长度");

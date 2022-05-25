@@ -9,6 +9,10 @@ TagManager:
   - InteractiveItem
   - Teleporter
   - Character
+  - MazeWall
+  - Point
+  - TextWall
+  - 2071
   layers:
   - Default
   - TransparentFX
@@ -20,8 +24,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - MazeWall
+  - UIItem
   - 
   - 
   - 
@@ -51,4 +55,7 @@ TagManager:
     locked: 0
   - name: Front
     uniqueID: 3666223595
+    locked: 0
+  - name: UI
+    uniqueID: 1663212573
     locked: 0
