@@ -70,7 +70,7 @@ public class Player_L3 : Player
                             Froze();
                             if (!l3Manager.isGetTable) {
                                 flowChart.ExecuteBlock("V植入_没登记表");
-                            } else if (!l3Manager.isGetDiary1) {
+                            } else if (!l3Manager.isFinTable) {
                                 flowChart.ExecuteBlock("V植入_登记表错误");
                             } else {
                                 flowChart.ExecuteBlock("V植入");
@@ -90,7 +90,7 @@ public class Player_L3 : Player
                     break;
                 case "结局门":
                     Froze();
-                    l3Manager.OpenInput2079();
+                    l3Manager.Right2079();
                     break;
             }
         }

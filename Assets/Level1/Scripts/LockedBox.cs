@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LockedBox : MonoBehaviour
 {
     public LevelManager_L1 levelManager;
-    public Color[] colors;
+    public Sprite[] sprites;
     private int[] btnColors = { 0, 0, 0 };
     public Flowchart flowChart;
 
@@ -22,10 +22,10 @@ public class LockedBox : MonoBehaviour
         levelManager.audioManager.PlaySE(6);
 
         int index = img.transform.GetSiblingIndex();
-        btnColors[index] = (btnColors[index] + 1) % colors.Length;
-        img.color = colors[btnColors[index]];
+        btnColors[index] = (btnColors[index] + 1) % sprites.Length;
+        img.sprite = sprites[btnColors[index]];
 
-        if (btnColors[0] == 0 && btnColors[1] == 4 && btnColors[2] == 3) {
+        if (btnColors[0] == 0 && btnColors[1] == 1 && btnColors[2] == 2) {
             levelManager.audioManager.PlaySE(7);
             bOpen = true;
             levelManager.GetGateKey();

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class StartManager : MonoBehaviour
 {
+    public AudioManager audioManager;
     public Player_L0 player;
     public GameObject startPanel;
     public GameObject startAnim;
@@ -21,19 +22,22 @@ public class StartManager : MonoBehaviour
         clinic.SetActive(true);
         //startAnim.SetActive(true);
         flowChart.ExecuteBlock("Start");
+        Manager.ChangeBGM(5);
     }
 
-    public void GoLevel1()
+    public IEnumerator GoLevel1()
     {
+        audioManager.PlaySE(0);
+        Manager.ChangeBGM(-1);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("Scene_Level1_Pre");
     }
 
     public void Black()
     {
-        print("1");
+        black.color = new Color(0, 0, 0, 1);
         black.gameObject.SetActive(true);
-        black.color = new Color(0, 0, 0, 0);
-        black.DOColor(new Color(0, 0, 0, 1), 2).OnComplete(GoLevel1);
+        StartCoroutine(GoLevel1());
     }
 
     #region ÐÂÎÅ
@@ -42,6 +46,7 @@ public class StartManager : MonoBehaviour
     public GameObject newsNewIco;
     public void ReadNews()
     {
+        audioManager.PlaySE(2);
         newsUI.SetActive(true);
         newsNewIco.SetActive(false);
     }
@@ -84,6 +89,7 @@ public class StartManager : MonoBehaviour
             black.color = new Color(0, 0, 0, 0);
             black.DOColor(new Color(0, 0, 0, 1), 2).OnComplete(() => {
                 startAnim.SetActive(true);
+                Manager.ChangeBGM(4);
                 clinic.SetActive(false);
                 black.DOColor(new Color(0, 0, 0, 0), 2).OnComplete(() => {
                     black.gameObject.SetActive(false);

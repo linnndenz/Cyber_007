@@ -18,6 +18,12 @@ public class LevelManager_L3 : LevelManager
         isFirstGetInMaze = true;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        Manager.ChangeBGM(6);
+    }
+
     void Update()
     {
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.C)) {
@@ -56,7 +62,12 @@ public class LevelManager_L3 : LevelManager
         isGetQueue = true;
         queuePeople.SetActive(true);
     }
-
+    #endregion
+    #region 登记表
+    [Header("登记表")]
+    public GameObject tableInput;
+    public GameObject tableAge;
+    public bool isFinTable;
     //获得登记表
     public void GetTable()
     {
@@ -76,6 +87,16 @@ public class LevelManager_L3 : LevelManager
         player.Froze();
         vTable.SetActive(true);
         return true;
+    }
+
+    //登记表信息补充
+    public void Right18(string s)
+    {
+        if (s.Trim() != "18") return;
+        tableInput.SetActive(false);
+        tableAge.SetActive(true);
+        isFinTable = true;
+
     }
     #endregion
 
@@ -154,6 +175,7 @@ public class LevelManager_L3 : LevelManager
     int firstMaze = 0;
     public void FirstInteractMaze(int index)
     {
+        player.Froze();
         firstMaze = index;
         isFirstGetInMaze = false;
         flowChart.ExecuteBlock("迷宫");
@@ -165,6 +187,7 @@ public class LevelManager_L3 : LevelManager
 
     public void OpenMaze(int index)
     {
+        Manager.ChangeBGM(7);
         mazeIndex = index;
         isGetBagItemInMaze = false;
         isGetSceneItemInMaze = false;
@@ -174,6 +197,7 @@ public class LevelManager_L3 : LevelManager
     int mazeIndex;//012
     public void CloseMaze()
     {
+        Manager.ChangeBGM(6);
         if (isGetBagItemInMaze && isGetSceneItemInMaze) {
             flowChart.ExecuteBlock("迷宫_都获得");
         } else if (isGetBagItemInMaze) {
@@ -193,7 +217,6 @@ public class LevelManager_L3 : LevelManager
         if (mazeIndex == 2) {
             player.Froze();//电脑的迷宫，对话后还是froze状态
         }
-        print(mazeIndex);
     }
     //迷宫通关计数
     [Header("迷宫通关年份")]
@@ -341,6 +364,7 @@ public class LevelManager_L3 : LevelManager
         }
 
         yield return new WaitForSeconds(0.5f);
+        audioManager.PlaySE(4);
         analyseThings[0].SetActive(true);//警告底图标
         analyseThings[1].SetActive(true);//市民负面情绪比率
         yield return new WaitForSeconds(1);
@@ -400,24 +424,37 @@ public class LevelManager_L3 : LevelManager
         EndDoor.SetActive(true);
         robo.GetComponent<Collider2D>().enabled = false;
     }
-    public GameObject input2079;
-    public void OpenInput2079()
-    {
-        player.Froze();
-        input2079.SetActive(true);
-    }
+    //public GameObject input2079;
+    //public void OpenInput2079()
+    //{
+    //    player.Froze();
+    //    input2079.SetActive(true);
+    //}
     public GameObject endScene;
     public GameObject scene2071;
     public GameObject bagui;
-    public void Right2079(string s)
+    public Transform playerPos;
+    //public void Right2079(string s)
+    //{
+    //    if (s.Trim() != "2079") return;
+    //    //player.gameObject.SetActive(false);
+    //    player.transform.position = playerPos.position;
+    //    bagui.SetActive(false);
+    //    scene2071.SetActive(false);
+
+    //    endScene.SetActive(true);
+    //    //input2079.SetActive(false);
+    //    flowChart.ExecuteBlock("大清洗");
+    //}
+    public void Right2079()
     {
-        if (s.Trim() != "2079") return;
-        player.gameObject.SetActive(false);
+        player.Froze();
+        player.transform.position = playerPos.position;
         bagui.SetActive(false);
         scene2071.SetActive(false);
 
         endScene.SetActive(true);
-        input2079.SetActive(false);
+        //input2079.SetActive(false);
         flowChart.ExecuteBlock("大清洗");
     }
 
@@ -438,10 +475,22 @@ public class LevelManager_L3 : LevelManager
         }
         //最后一张时，不关闭上一张
         yield return new WaitForSeconds(1);
+        audioManager.PlaySE(3);
         countDownTexts.GetChild(countDownTexts.childCount - 1).gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1);
         flowChart.ExecuteBlock("大清洗_倒计时后");
+    }
+    public void VDown()
+    {
+        player.animator.Play("Fall", 0);
+        player.transform.position += new Vector3(-0.83f, 0, 0);
+        StartCoroutine(VDownAfter());
+    }
+    public IEnumerator VDownAfter()
+    {
+        yield return new WaitForSeconds(2);
+        flowChart.ExecuteBlock("大清洗_V倒地后");
     }
     public void AfterVDown()
     {

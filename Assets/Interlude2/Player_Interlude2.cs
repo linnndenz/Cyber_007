@@ -20,6 +20,7 @@ public class Player_Interlude2 : Player
             switch (coll.name) {
                 case "Illusion":
                     Froze();
+                    m_levelManager.audioManager.PlaySE(0);
                     m_levelManager.flowChart.ExecuteBlock("Illusion");
                     break;
                 case "фад╩":

@@ -44,7 +44,11 @@ public sealed class LevelManager_L1 : LevelManager
         Instance = this;
         player.transform.position = startPos.position;
     }
-
+    protected override void Start()
+    {
+        base.Start();
+        Manager.ChangeBGM(2);
+    }
     public override void InitItems()
     {
         item_dict.Add("床下的罐子", new Item("床下的罐子", true, Resources.Load<Sprite>("Texture_L1/床下的罐子"), GetBottle, UseBottle, null));
@@ -54,7 +58,7 @@ public sealed class LevelManager_L1 : LevelManager
         item_dict.Add("鸡蛋", new Item("鸡蛋", true, Resources.Load<Sprite>("Texture_L1/鸡蛋"), null, null, null));
         item_dict.Add("孤儿院大门钥匙", new Item("孤儿院大门钥匙", true, Resources.Load<Sprite>("Texture_L1/孤儿院大门钥匙"), null, OpenGate, null));
         item_dict.Add("红颜料", new Item("红颜料", true, Resources.Load<Sprite>("Texture_L1/红颜料"), null, null, null));
-        item_dict.Add("相片", new Item("相片", true, Resources.Load<Sprite>("Texture_L1/相片"), null, null, null,true,OpenPhoto));
+        item_dict.Add("相片", new Item("相片", true, Resources.Load<Sprite>("Texture_L1/相片"), null, null, null, true, OpenPhoto));
 
         redQueen.GetComponent<BoxCollider2D>().enabled = false;
     }
@@ -164,7 +168,7 @@ public sealed class LevelManager_L1 : LevelManager
     {
         bag.RemoveItem(item_dict["草莓"]);
         bag.RemoveItem(item_dict["鸡蛋"]);
-        BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);//背包UI更新
+        BagUI.Instance.Refresh_PickItem(-1);//背包UI更新
     }
     #endregion
 
@@ -204,7 +208,7 @@ public sealed class LevelManager_L1 : LevelManager
         player.transform.position = gardenLPos.position;
         player.DeFroze();
 
-        Manager.Instance.ChangeBGM(0);
+        Manager.ChangeBGM(0);
     }
 
     #endregion
@@ -218,6 +222,7 @@ public sealed class LevelManager_L1 : LevelManager
     public Animator soldierAAnimator;
     public void GetTomato()
     {
+        audioManager.PlaySE(11);
         bag.AddItem(item_dict["红颜料"]);//背包数据更新
         BagUI.Instance.Refresh_PickItem(bag.GetItemList().Count - 1);
         tomato.enabled = false;
@@ -272,20 +277,25 @@ public sealed class LevelManager_L1 : LevelManager
     public void OpenHospitalGate()
     {
         player.Froze();
-        soldier.SetActive(false);
-        hospitalGate.DOMoveX(hospitalGate.transform.position.x + 3.5f, 2f).OnComplete(() => {
-            black.color = new Color(0, 0, 0, 0);
-            black.gameObject.SetActive(true);
-            black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
-                player.gameObject.SetActive(false);
-                garden.SetActive(false);
-                hospitalUI.SetActive(true);
-                black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
-                    black.gameObject.SetActive(false);
-                    flowChart.ExecuteBlock("进入医院");
-                    Manager.Instance.ChangeBGM(-1);
+        soldier.GetComponent<Soldier>().isFin = true;
+        //soldier.SetActive(false);
+        hospitalGate.DOMoveX(hospitalGate.transform.position.x + 3.5f, 1).OnComplete(() => {
+            player.gameObject.SetActive(false);
+            hospitalGate.DOMoveX(hospitalGate.transform.position.x - 3.5f, 1).OnComplete(() => {
+                black.color = new Color(0, 0, 0, 0);
+                black.gameObject.SetActive(true);
+                black.DOColor(new Color(0, 0, 0, 1), 1f).OnComplete(() => {
+                    player.gameObject.SetActive(false);
+                    garden.SetActive(false);
+                    hospitalUI.SetActive(true);
+                    black.DOColor(new Color(0, 0, 0, 0), 1.5f).OnComplete(() => {
+                        black.gameObject.SetActive(false);
+                        flowChart.ExecuteBlock("进入医院");
+                        Manager.ChangeBGM(-1);
+                    });
                 });
             });
+
         });
     }
     #endregion
@@ -304,7 +314,7 @@ public sealed class LevelManager_L1 : LevelManager
     public GameObject[] doctors;
     public void ContinueTV()
     {
-        Manager.Instance.ChangeBGM(1);
+        Manager.ChangeBGM(1);
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 1.5f).OnComplete(() => {
@@ -348,6 +358,7 @@ public sealed class LevelManager_L1 : LevelManager
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 3f).OnComplete(() => {
+            Manager.ChangeBGM(3);
             stage.SetActive(true);
             black.DOColor(new Color(0, 0, 0, 0), 3f).OnComplete(() => {
                 black.gameObject.SetActive(false);

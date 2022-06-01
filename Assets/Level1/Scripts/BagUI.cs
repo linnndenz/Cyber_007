@@ -15,6 +15,8 @@ public class BagUI : MonoBehaviour
     [SerializeField] protected Transform slotParent;
     protected Slot[] slots;
     [SerializeField] protected Transform bagPanel;
+    [HideInInspector] public GameObject outline;
+
 
     [Header("数据")]
     protected Bag bag;
@@ -28,6 +30,7 @@ public class BagUI : MonoBehaviour
     protected virtual void Start()
     {
         //数据初始化
+        outline = transform.GetChild(0).Find("Outline").gameObject;
         bag = LevelManager.GetBag();
         slots = slotParent.GetComponentsInChildren<Slot>();
         ReFresh();
@@ -73,10 +76,13 @@ public class BagUI : MonoBehaviour
     //Pick，player调用
     public void Refresh_PickItem(int lastindex)
     {
-        if (lastindex >= 0) {
-            slots[lastindex].IsChosen = true;
+        //if (lastindex >= 0) {
+        //    slots[lastindex].IsChosen = true;
+        //}
+        //ClickSlot(lastindex);
+        if(lastindex == -1) {
+            ClickSlot(-1);
         }
-        ClickSlot(lastindex);
         ReFresh();
     }
     #endregion

@@ -26,6 +26,7 @@ public class Player_L0 : Player
                 case "Illusion":
                     if (froze) return;
                     Froze();
+                    l0Manager.audioManager.PlaySE(1);
                     l0Manager.flowChart.ExecuteBlock("Illusion");
                     break;
             }

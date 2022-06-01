@@ -24,9 +24,8 @@ public class Manager : MonoBehaviour
     {
         bgmAudio = GetComponent<AudioSource>();
 
-        bgms = new AudioClip[2];
-        bgms[0] = Resources.Load<AudioClip>("BGM/0BGM_花园");
-        bgms[1] = Resources.Load<AudioClip>("BGM/1BGM_医院车祸段落后");
+        //bgms = new AudioClip[2];
+        bgms = Resources.LoadAll<AudioClip>("BGM");
     }
 
     private void Update()
@@ -36,16 +35,20 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public void ChangeBGM(int index)
+    public static void ChangeBGM(int index)
     {
         if (index == -1) {
-            bgmAudio.clip = null;
-        } else if (index >= bgms.Length) {
+            Instance.bgmAudio.clip = null;
+        } else if (index >= Instance.bgms.Length) {
             print("bgm超出数组");
             return;
         } else {
-            bgmAudio.clip = bgms[index];
-            bgmAudio.Play();
+            if(Instance.bgmAudio.clip == Instance.bgms[index]) {
+                print("播放了相同的bgm");
+                return;
+            }
+            Instance.bgmAudio.clip = Instance.bgms[index];
+            Instance.bgmAudio.Play();
         }
     }
 

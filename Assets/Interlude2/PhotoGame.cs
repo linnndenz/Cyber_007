@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PhotoGame : MonoBehaviour
 {
+    public AudioManager audioManager;
     public List<PhotoSprites> backBlocks;
     public List<PhotoSprites> frontBlocks;
     public Transform blockParent;
@@ -43,6 +44,7 @@ public class PhotoGame : MonoBehaviour
     public void CickBlock(int index)
     {
         if (isWin) return;
+        audioManager.PlaySE(2);
         int row = index / 4;
         int line = index % 4;
 
@@ -83,6 +85,7 @@ public class PhotoGame : MonoBehaviour
     bool isWin;
     private void CheckWin()
     {
+        if (isWin) return;
         for (int i = 0; i < turns.GetLength(0); i++) {
             for (int j = 0; j < turns.GetLength(1); j++) {
                 if (turns[i, j] == false) return;
@@ -90,6 +93,7 @@ public class PhotoGame : MonoBehaviour
         }
 
         //win
+        audioManager.PlaySE(1);
         isWin = true;
         StartCoroutine(FinishGame());
         IEnumerator FinishGame()

@@ -44,7 +44,7 @@ public abstract class AudioManager : MonoBehaviour
     }
     public void PlaySE(AudioClip clip)
     {
-        if (ses == null || clip == null) return;
+        if (clip == null) return;
 
         print("≤•∑≈“Ù–ß" + clip);
         sePlayers[sePlayerIndex].clip = clip;

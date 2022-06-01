@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class MinerGame : MonoBehaviour
 {
+    [Header("血量")]
+    public GameObject[] hpSrs;
     public int hp;
+    [Header("关卡")]
     public GameObject[] levels = new GameObject[4];
     public int level;//关卡
     public int cnt;//关卡内的点数
@@ -35,6 +38,7 @@ public class MinerGame : MonoBehaviour
     //得分
     public void GetPoint()
     {
+        LevelManager.Instance.audioManager.PlaySE(0);
         cnt++;
         if (cnt >= 3) {
             NextLevel();
@@ -45,6 +49,7 @@ public class MinerGame : MonoBehaviour
     public void GetHurt()
     {
         hp--;
+        hpSrs[hp].SetActive(false);
         if (hp <= 0) {
             ResetLevel();
         }
@@ -55,13 +60,17 @@ public class MinerGame : MonoBehaviour
     {
         level++;
         hp = 3;
+        for (int i = 0; i < 3; i++) {
+            hpSrs[i].SetActive(true);
+        }
         cnt = 0;
+        
 
         //游戏结束
         if (level == 4) {
             if (!l3Manager.isGetTable) {
                 flowChart.ExecuteBlock("V植入_没登记表");
-            } else if (!l3Manager.isGetDiary1) {
+            } else if (!l3Manager.isFinTable) {
                 flowChart.ExecuteBlock("V植入_登记表错误");
             } else {
                 flowChart.ExecuteBlock("V植入");
@@ -84,6 +93,9 @@ public class MinerGame : MonoBehaviour
     {
         cnt = 0;
         hp = 3;
+        for (int i = 0; i < 3; i++) {
+            hpSrs[i].SetActive(true);
+        }
         Transform tmp = levels[level - 1].transform.Find("Points");
         for (int i = 0; i < tmp.childCount; i++) {
             tmp.GetChild(i).gameObject.SetActive(true);

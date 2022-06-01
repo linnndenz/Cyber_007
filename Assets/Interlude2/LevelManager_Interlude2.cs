@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 public class LevelManager_Interlude2 : MonoBehaviour
 {
+    public AudioManager audioManager;
+    void Start()
+    {
+        Manager.ChangeBGM(5);
+    }
+
     public Player_Interlude2 player;
     public Flowchart flowChart;
 

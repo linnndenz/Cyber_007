@@ -29,10 +29,12 @@ public class QTEBlock : MonoBehaviour
         transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
         if (transform.position.x > lPos.position.x && transform.position.x < rPos.position.x) {
             if (Input.GetKeyDown(keycode)) {
+                LevelManager.Instance.audioManager.PlaySE(10);
                 isHit = true;
                 hit.SetActive(true);
                 StartCoroutine(Close());
             } else if (Input.anyKeyDown) {
+                LevelManager.Instance.audioManager.PlaySE(10);
                 isHit = true;
                 miss.SetActive(true);
                 soldier.missQteBlock = true;

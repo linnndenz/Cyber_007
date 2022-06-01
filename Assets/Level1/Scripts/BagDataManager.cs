@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace BagDataManager
 {
@@ -14,6 +13,7 @@ namespace BagDataManager
 
         public void AddItem(Item item)
         {
+            BagUI.Instance.outline.SetActive(true);
             item_list.Add(item);
             item.Get?.Invoke();
         }

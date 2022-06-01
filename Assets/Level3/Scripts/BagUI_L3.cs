@@ -15,6 +15,7 @@ public class BagUI_L3 : BagUI
     protected override void Start()
     {
         //数据初始化
+        outline = transform.GetChild(0).Find("Outline").gameObject;
         bag = LevelManager.GetBag();
         slots = slotParent.GetComponentsInChildren<Slot>();
         ReFresh();

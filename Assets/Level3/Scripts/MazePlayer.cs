@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class MazePlayer : MonoBehaviour
 {
+    //迷宫计数
+    public SpriteRenderer cntSr;
+    public Sprite[] cntSprites;
+
     public bool froze = false;
     public void Froze() => froze = true;
     public void DeFroze() => froze = false;
@@ -39,43 +43,59 @@ public class MazePlayer : MonoBehaviour
 
         //maze1
         if (collision.name == "登记表") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetTable();
             collision.gameObject.SetActive(false);
             cnt0++;
+            cntSr.sprite = cntSprites[cnt0];
         } else if (collision.name == "排队人") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetQueue();
             collision.gameObject.SetActive(false);
             cnt0++;
+            cntSr.sprite = cntSprites[cnt0];
         }
 
         //maze2
         if (collision.name == "日记上半") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetDiary1();
             collision.gameObject.SetActive(false);
             cnt1++;
+            cntSr.sprite = cntSprites[cnt1];
         } else if (collision.name == "日记下半") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetDiary2();
             collision.gameObject.SetActive(false);
             cnt1++;
+            cntSr.sprite = cntSprites[cnt1];
         }
 
         //maze3
         if (collision.name == "报告1") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetFile(0);
             collision.gameObject.SetActive(false);
             cnt2++;
+            cntSr.sprite = cntSprites[cnt2];
         } else if (collision.name == "报告2") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetFile(1);
             collision.gameObject.SetActive(false);
             cnt2++;
+            cntSr.sprite = cntSprites[cnt2];
         } else if (collision.name == "报告3") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetFile(2);
             collision.gameObject.SetActive(false);
             cnt2++;
+            cntSr.sprite = cntSprites[cnt2];
         } else if (collision.name == "报告4") {
+            LevelManager.Instance.audioManager.PlaySE(2);
             levelManager.GetFile(3);
             collision.gameObject.SetActive(false);
             cnt2++;
+            cntSr.sprite = cntSprites[cnt2];
         }
     }
 

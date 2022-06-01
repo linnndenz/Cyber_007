@@ -21,6 +21,12 @@ public class LevelManager_L1_Pre : LevelManager
         player.Froze();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        Manager.ChangeBGM(-1);
+    }
+
     public GameObject rTip;
     public SpriteRenderer hold;
     bool isR;
@@ -38,6 +44,7 @@ public class LevelManager_L1_Pre : LevelManager
     public bool UseShrinkLiquid(string toname)
     {
         if (toname != "×Ô¼º") return false;
+        audioManager.PlaySE(1);
         isR = true;
         player.Froze();
         Vector3 initScale = player.transform.localScale;
