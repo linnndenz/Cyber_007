@@ -12,10 +12,27 @@ public class LevelManager_Interlude3 : MonoBehaviour
     void Start()
     {
         Manager.ChangeBGM(5);
+        if (SaveData.Instance.passedLevel < 2) {
+            SaveData.Instance.passedLevel = 2;
+        }
     }
 
     public Flowchart flowChart;
     public Player_Interlude3 player;
+
+    [Header("À­¸Ë")]
+    public GameObject rob_victor;
+    public GameObject rob_v;
+    public void ShowVictorRob()
+    {
+        rob_victor.SetActive(true);
+    }
+    public void ShowVRob()
+    {
+        SaveData.Instance.isGetRob = true;
+        rob_victor.SetActive(false);
+        rob_v.SetActive(true);
+    }
 
     [Header("Î¬¿Ë¶à")]
     public Transform victor;

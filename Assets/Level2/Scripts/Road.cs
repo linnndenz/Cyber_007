@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Road : MonoBehaviour
+{
+   
+
+    float speed = 18.0F;
+
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        if (transform.position.x < -50)
+        {
+            transform.position = new Vector3(-25, transform.position.y, transform.position.z);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            speed = 36.0f;
+            transform.Translate(Vector3.right * Time.deltaTime * speed);
+        }
+        else
+        {
+            speed = 18.0f;
+            transform.Translate(Vector3.right * Time.deltaTime * speed);
+        }
+
+      
+    }
+}
+

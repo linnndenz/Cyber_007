@@ -12,10 +12,29 @@ public class LevelManager_Interlude2 : MonoBehaviour
     void Start()
     {
         Manager.ChangeBGM(5);
+        if (SaveData.Instance.passedLevel < 1) {
+            SaveData.Instance.passedLevel = 1;
+        }
+        
     }
 
     public Player_Interlude2 player;
     public Flowchart flowChart;
+
+    [Header("Ãµ¹å»¨")]
+    public GameObject rose_vva;
+    public GameObject rose_v;
+    public void ShowVvaRose()
+    {
+        rose_vva.SetActive(true);
+    }
+    public void ShowVRose()
+    {
+        SaveData.Instance.isGetRose = true;
+        rose_vva.SetActive(false);
+        rose_v.SetActive(true);
+
+    }
 
     #region Þ±Þ±°²
     [Header("Þ±Þ±°²")]

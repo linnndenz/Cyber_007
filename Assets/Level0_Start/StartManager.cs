@@ -16,13 +16,60 @@ public class StartManager : MonoBehaviour
     public Flowchart flowChart;
     public Image black;
 
+    private void Start()
+    {
+        player.Froze();
+    }
+
+    [Header("存档")]
+    public Button[] saves;
+    //存档初始加载
+    public void Init()
+    {
+        //存档到哪一关
+        if (SaveData.Instance.passedLevel == 1) {
+            saves[0].interactable = true;
+        } else if (SaveData.Instance.passedLevel == 2) {
+            saves[0].interactable = true;
+            saves[1].interactable = true;
+        } else if (SaveData.Instance.passedLevel == 3) {
+            saves[0].interactable = true;
+            saves[2].interactable = true;
+            saves[3].interactable = true;
+        }
+    }
+    public void LoadSave(int i)
+    {
+        if(i == 1) {
+            SceneManager.LoadScene("Interlude2");
+        }else if(i == 2) {
+            SceneManager.LoadScene("Interlude3");
+        } else {
+            SceneManager.LoadScene("Scene_End");
+        }
+    }
+
+    [Header("开始游戏")]
+    public Transform titlePosition;
     public void StartGame()
     {
-        startPanel.SetActive(false);
-        clinic.SetActive(true);
+        clinic.transform.DOScale(Vector3.one, 1.5f);
+        clinic.transform.DOMove(Vector3.zero, 1.5f);
+        startPanel.transform.DOScale(titlePosition.localScale, 1.5f);
+        startPanel.transform.DOMove(titlePosition.position, 1.5f).OnComplete(() => {
+            startPanel.GetComponent<CanvasGroup>().DOFade(0, 1f).OnComplete(() => startPanel.SetActive(false));
+            flowChart.ExecuteBlock("Start");
+        });
+
+        //clinic.SetActive(true);
         //startAnim.SetActive(true);
-        flowChart.ExecuteBlock("Start");
         Manager.ChangeBGM(5);
+    }
+    //退出游戏
+    public void QuitGame()
+    {
+        SaveData.Instance.SaveGame();//先存档后退出
+        Application.Quit();
     }
 
     public IEnumerator GoLevel1()
