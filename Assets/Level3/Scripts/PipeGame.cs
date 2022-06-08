@@ -28,6 +28,7 @@ public class PipeGame : MonoBehaviour
 
         //¹Ø¿¨Íê³É
         isFinish = true;
+        levelManager.audioManager.PlaySE(6);
         StartCoroutine(nameof(FinishPipeGame));
     }
 

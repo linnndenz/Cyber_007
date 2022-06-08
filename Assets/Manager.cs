@@ -30,7 +30,7 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl)&&Input.GetKey(KeyCode.C)) {
+        if (Input.GetKey(KeyCode.Escape) && Input.GetKey(KeyCode.Escape)) {
             Application.Quit();
         }
     }
@@ -43,7 +43,7 @@ public class Manager : MonoBehaviour
             print("bgm超出数组");
             return;
         } else {
-            if(Instance.bgmAudio.clip == Instance.bgms[index]) {
+            if (Instance.bgmAudio.clip == Instance.bgms[index]) {
                 print("播放了相同的bgm");
                 return;
             }

@@ -97,7 +97,8 @@ public class LevelManager_Interlude2 : MonoBehaviour
         black.color = new Color(0, 0, 0, 0);
         black.gameObject.SetActive(true);
         black.DOColor(new Color(0, 0, 0, 1), 2).OnComplete(() => {
-            SceneManager.LoadScene("Interlude3");
+            SceneManager.LoadScene("Level2_0");
+            Manager.ChangeBGM(8);
         });
     }
 }

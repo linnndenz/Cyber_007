@@ -263,8 +263,11 @@ public class LevelManager_L3 : LevelManager
     public bool UseBrain(string toname)
     {
         if (toname != "∑≈÷√≈Ã") return false;
+
         brainPlate.sprite = brain;
         isPutBrain = true;
+        audioManager.PlaySE(6);
+
         return true;
     }
 
@@ -468,6 +471,7 @@ public class LevelManager_L3 : LevelManager
     public IEnumerator CountDown_Coroutine()
     {
         countDownTexts.GetChild(0).gameObject.SetActive(true);
+        audioManager.PlaySE(7);
         for (int i = 1; i < countDownTexts.childCount - 1; i++) {
             yield return new WaitForSeconds(1);
             countDownTexts.GetChild(i - 1).gameObject.SetActive(false);

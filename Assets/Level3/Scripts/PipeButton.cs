@@ -30,5 +30,6 @@ public class PipeButton : MonoBehaviour, IPointerClickHandler
         transform.Rotate(0, 0, -60);
         currIndex = (currIndex + 1) % 6;
         pipeGame.CheckFinish();
+        LevelManager.Instance.audioManager.PlaySE(5);
     }
 }
