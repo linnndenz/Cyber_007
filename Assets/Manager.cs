@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape) && Input.GetKey(KeyCode.Escape)) {
             Application.Quit();
+        }
+
+        if(Input.GetKeyDown(KeyCode.L)) {
+            SceneManager.LoadScene("Level4_0");
         }
     }
 

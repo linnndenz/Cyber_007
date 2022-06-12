@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelManager_L3 : LevelManager
@@ -525,6 +526,8 @@ public class LevelManager_L3 : LevelManager
             }
         }
         //afterVDownTexts.GetChild(afterVDownTexts.childCount - 1).gameObject.SetActive(false);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Level4_0");
     }
 
     #endregion
