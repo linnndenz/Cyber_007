@@ -527,6 +527,7 @@ public class LevelManager_L3 : LevelManager
         }
         //afterVDownTexts.GetChild(afterVDownTexts.childCount - 1).gameObject.SetActive(false);
         yield return new WaitForSeconds(2);
+        Manager.ChangeBGM(-1);
         SceneManager.LoadScene("Level4_0");
     }
 

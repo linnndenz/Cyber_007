@@ -31,12 +31,8 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Escape) && Input.GetKey(KeyCode.Escape)) {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.C)) {
             Application.Quit();
-        }
-
-        if(Input.GetKeyDown(KeyCode.L)) {
-            SceneManager.LoadScene("Level4_0");
         }
     }
 
