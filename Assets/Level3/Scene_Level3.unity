@@ -2255,6 +2255,7 @@ GameObject:
   - component: {fileID: 96264659}
   - component: {fileID: 96264658}
   - component: {fileID: 96264657}
+  - component: {fileID: 96264660}
   m_Layer: 5
   m_Name: InputField
   m_TagString: Untagged
@@ -2351,7 +2352,19 @@ MonoBehaviour:
         m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 96264660}
+        m_TargetAssemblyTypeName: FuckUChina, Assembly-CSharp
+        m_MethodName: FuckYou
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
@@ -2398,6 +2411,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 96264655}
   m_CullTransparentMesh: 1
+--- !u!114 &96264660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96264655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdec163eaaf23b94fbccf962ff235377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &101213284
 GameObject:
   m_ObjectHideFlags: 0
@@ -18463,6 +18488,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -18471,15 +18504,43 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1536539384}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CheckYearIsRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 979847218}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FuckYou
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LevelManager_L3, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FuckUChina, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5344264504744280277, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
@@ -25489,6 +25550,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968705722}
   m_CullTransparentMesh: 1
+--- !u!1 &974182380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5344264503520984649, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+  m_PrefabInstance: {fileID: 5344264504417366655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &974182381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974182380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdec163eaaf23b94fbccf962ff235377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &974960732
 GameObject:
   m_ObjectHideFlags: 0
@@ -25775,6 +25853,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &979847217 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5344264503520984649, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+  m_PrefabInstance: {fileID: 573574900}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &979847218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979847217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdec163eaaf23b94fbccf962ff235377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &980457338
 GameObject:
   m_ObjectHideFlags: 0
@@ -40447,6 +40542,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -40455,15 +40558,43 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1536539384}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CheckYearIsRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1930382558}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FuckYou
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LevelManager_L3, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FuckUChina, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5344264504744280277, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
@@ -44885,6 +45016,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6164783465764860184, guid: 7c194debfd4f22c40b524a54a7143274, type: 3}
   m_PrefabInstance: {fileID: 1927562119}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1930382557 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5344264503520984649, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+  m_PrefabInstance: {fileID: 1738388381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1930382558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930382557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdec163eaaf23b94fbccf962ff235377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1935709388
 GameObject:
   m_ObjectHideFlags: 0
@@ -50133,6 +50281,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -50149,8 +50301,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1994477385}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -50161,6 +50321,18 @@ PrefabInstance:
       value: BackOneGrid
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 974182381}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FuckYou
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LevelManager_L3, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -50169,11 +50341,19 @@ PrefabInstance:
       value: MazePlayer, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FuckUChina, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
       propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5344264503520984647, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5344264504744280277, guid: 1b4727dc70584dd408fde8f6b69e8c4a, type: 3}

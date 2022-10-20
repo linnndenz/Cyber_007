@@ -1,6 +1,7 @@
 using BagDataManager;
 using DG.Tweening;
 using Fungus;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -249,7 +250,10 @@ public class LevelManager_L3 : LevelManager
                     mazeInScene[2].GetComponent<Button>().enabled = false;
                 }
             }
-        } catch { print("年份输入有误"); }
+        } catch (FormatException) {
+            yearPages[mazeIndex].GetComponentInChildren<InputField>().text = "";
+            print("操他妈的傻逼国内审核制度");
+        }
 
     }
 
